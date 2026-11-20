@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" data-motion="off">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14191f">
+<meta name="description" content="Mattie Matrix: Match Circuit is an eight-stage match-3 arcade game. Swap portraits, chain matches, and clear the circuit.">
+<title>Mattie Matrix: Match Circuit</title>
+<link rel="icon" href="tiles/mark.webp" type="image/webp">
+<link rel="stylesheet" href="style.css">
+<script defer src="game.js"></script>
+</head>
+<body>
+<main class="entry-gate" id="entryGate" aria-labelledby="entryQuestion">
+  <div class="entry-display">
+    <div class="entry-card">
+      <div class="entry-brand"><span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><strong>Mattie Matrix</strong><span>Match Circuit</span></div></div>
+      <div class="entry-prompt">
+        <h1 id="entryQuestion">Is Mattie<br class="entry-break"> a girl?</h1>
+        <div class="entry-actions">
+          <button type="button" class="primary" id="entryYes">Yes</button>
+          <button type="button" class="nav-btn" id="entryNo">No</button>
+        </div>
+        <p class="entry-feedback" id="entryFeedback" role="status"></p>
+        <noscript><p>Enable JavaScript to play Match Circuit.</p></noscript>
+      </div>
+    </div>
+    <figure class="entry-art" aria-hidden="true"><img src="art/entry.webp" width="1100" height="1100" alt="" fetchpriority="high"></figure>
+  </div>
+</main>
+<header class="topbar" id="gameHeader" hidden><div class="top-inner">
+  <a class="brand" href="#main" aria-label="Mattie Matrix: Match Circuit, back to game"><span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Mattie Matrix</span></a>
+  <nav class="nav-actions" aria-label="Game controls">
+    <button id="levelsBtn" class="nav-btn"><span class="nav-icon" aria-hidden="true">▦</span><span>Stages</span></button>
+    <button id="sound" class="nav-btn sound" aria-label="Enable sound"><span id="soundIcon" class="nav-icon" aria-hidden="true">♪</span><span id="soundLabel">Sound off</span></button>
+    <button id="motion" class="nav-btn motion" aria-pressed="false" aria-label="Tile motion"><span class="nav-icon" aria-hidden="true">≈</span><span id="motionLabel">Motion</span></button>
+    <button id="help" class="nav-btn help" aria-label="How to play" title="How to play"><b class="nav-icon" aria-hidden="true">?</b><span>How to play</span></button>
+  </nav>
+</div></header>
+<main class="shell" id="main" hidden>
+  <div class="title-row">
+    <h1>Match <em>Circuit</em></h1>
+    <div class="stage-progress">
+      <span id="stageChip"></span>
+      <div id="stageTrack" class="stage-track" role="group" aria-label="Campaign stages"></div>
+    </div>
+  </div>
+  <div class="game-layout">
+    <section class="panel mission" aria-labelledby="stageName">
+      <div class="stage-header">
+        <img id="stagePortrait" src="tiles/luna.webp" width="720" height="720" alt="">
+        <div class="stage-title"><p class="eyebrow" id="missionTitle">Current stage</p><h2 id="stageName"></h2></div>
+      </div>
+      <div class="moves"><span class="eyebrow">Moves left</span><strong id="moves"></strong></div>
+      <div class="stage-goals"><h3 class="eyebrow">Targets</h3><div id="goals"></div></div>
+    </section>
+    <section class="playfield" aria-label="Play area">
+      <div class="cabinet">
+        <div class="score-card" aria-label="Stage score">
+          <div class="score-head"><p class="eyebrow">Score</p><strong id="score">0</strong></div>
+          <div class="score-stars">
+            <div class="meter" id="meter" role="progressbar" aria-label="Progress toward three stars" aria-valuemin="0"><i></i></div>
+            <div class="star-track" id="starTrack" aria-label="Stage stars"><span>✦</span><span>✦</span><span>✦</span></div>
+          </div>
+          <div class="chain-stat"><span class="eyebrow">Best chain</span><strong id="bestChain">—</strong></div>
+        </div>
+        <div class="board-frame">
+          <div id="board" role="group" aria-label="Match-three board"></div>
+          <div id="effects" aria-hidden="true"></div>
+        </div>
+        <div class="board-footer" id="boardFooter"><p id="status" aria-live="polite">Drag or tap adjacent portraits to swap.</p><button id="restart" class="quiet" title="Restart stage"><span id="restartIcon" aria-hidden="true">↻</span><span id="restartLabel">Restart</span></button></div>
+      </div>
+    </section>
+    <aside class="tools-column">
+      <section class="panel boosters" aria-labelledby="boostTitle">
+        <h2 class="eyebrow" id="boostTitle">Power-ups</h2>
+        <button class="booster" id="hint"><span class="tool-icon hint-icon" aria-hidden="true">⌖</span><span><strong>Spotlight</strong><small>Reveal a swap</small></span><span class="charge">∞</span></button>
+        <button class="booster" id="shuffle"><span class="tool-icon shuffle-icon" aria-hidden="true">⤨</span><span><strong>Remix</strong><small>Shuffle the board</small></span><span class="charge" id="shuffleCount">2</span></button>
+        <button class="booster" id="zap" aria-pressed="false"><span class="tool-icon zap-icon" aria-hidden="true">ϟ</span><span><strong>Flash</strong><small>Clear one tile</small></span><span class="charge" id="zapCount">1</span></button>
+        <button class="booster encore" id="encore" aria-pressed="false"><span class="tool-icon encore-icon" aria-hidden="true">✦</span><span><strong>Encore</strong><small>Clear a 3 × 3 area</small></span><span class="charge" id="encoreCharge">0%</span></button>
+        <div class="encore-meter meter" id="encoreMeter" role="progressbar" aria-label="Encore charge" aria-valuemin="0" aria-valuemax="100"><i></i></div>
+      </section>
+      <section class="collection" aria-labelledby="castTitle">
+        <h2 class="eyebrow" id="castTitle">The cast</h2>
+        <div id="cast"></div>
+      </section>
+    </aside>
+  </div>
+</main>
+<dialog id="dialog" aria-labelledby="dialogTitle"><div class="dialog-inner"><button id="closeDialog" class="nav-btn dialog-close" aria-label="Close">×</button><div id="dialogContent"></div></div></dialog>
+</body>
+</html>
